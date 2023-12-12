@@ -543,7 +543,7 @@ class _PatchEditViewState extends State<_PatchEditView> {
                   children: [
                     Row(
                       children: [
-                        const Text('Path Top'),
+                        const Text('Patch Top'),
                         Switch(
                           value: _patch.patchTop,
                           onChanged: (value) {
@@ -557,7 +557,7 @@ class _PatchEditViewState extends State<_PatchEditView> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Text('Path Bottom'),
+                        const Text('Patch Bottom'),
                         Switch(
                           value: _patch.patchBottom,
                           onChanged: (value) {
@@ -571,7 +571,7 @@ class _PatchEditViewState extends State<_PatchEditView> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Text('Path Left'),
+                        const Text('Patch Left'),
                         Switch(
                           value: _patch.patchLeft,
                           onChanged: (value) {
@@ -585,7 +585,7 @@ class _PatchEditViewState extends State<_PatchEditView> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Text('Path Right'),
+                        const Text('Patch Right'),
                         Switch(
                           value: _patch.patchRight,
                           onChanged: (value) {
