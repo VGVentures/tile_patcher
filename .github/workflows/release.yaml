@@ -1,0 +1,120 @@
+name: release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev
+      - run: flutter build linux
+      - name: Zips the build
+        uses: papeloto/action-zip@v1
+        with:
+          files: tile_patcher/build/linux/x64/release/bundle/
+          dest: tp_linux.zip
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: tp_linux
+          path: tp_linux.zip
+
+  mac:
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: tile_patcher
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - run: flutter build macos
+      - name: Zips the build
+        run: cd build/macos/Build/Products/Release/ && zip -r tp_osx.zip Tile\ Patcher.app
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: tp_osx
+          path: tile_patcher/build/macos/Build/Products/Release/tp_osx.zip
+
+  windows:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: tile_patcher
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: flutter build windows
+      - name: Zips the build
+        uses: papeloto/action-zip@v1
+        with:
+          files: tile_patcher/build/windows/runner/Release/
+          dest: tp_windows.zip
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: tp_windows
+          path: tp_windows.zip
+
+  release_desktop:
+    needs: [linux, mac, windows]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: tp_linux
+
+      - name: Download Mac artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: tp_osx
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: tp_windows
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            tp_linux.zip
+            tp_osx.zip
+            tp_windows.zip
+          prerelease: true
+
+  release_web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+      - uses: erickzanardo/flutter-gh-pages@v3
+        with:
+          workingDir: tile_patcher
