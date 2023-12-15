@@ -37,7 +37,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: tile_patcher
 
     steps:
       - uses: actions/checkout@v2
@@ -59,7 +58,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: tile_patcher
 
     steps:
       - uses: actions/checkout@v2
