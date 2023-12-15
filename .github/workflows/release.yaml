@@ -108,13 +108,3 @@ jobs:
             tp_osx.zip
             tp_windows.zip
           prerelease: true
-
-  release_web:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v2
-      - uses: erickzanardo/flutter-gh-pages@v3
-        with:
-          workingDir: tile_patcher
