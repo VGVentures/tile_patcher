@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: tp_osx
-          path: tile_patcher/build/macos/Build/Products/Release/tp_osx.zip
+          path: build/macos/Build/Products/Release/tp_osx.zip
 
   windows:
     runs-on: windows-latest
